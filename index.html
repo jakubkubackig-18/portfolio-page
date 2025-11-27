@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jakub Kubacki — Cinematographer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --text-dim: #555555;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            cursor: grab;
+        }
+
+        body:active {
+            cursor: grabbing;
+        }
+
+        /* Fixed Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        header a {
+            pointer-events: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .contact-link {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-link:hover {
+            opacity: 0.5;
+        }
+
+        /* Horizontal Scroll Container */
+        .scroll-container {
+            display: flex;
+            height: 100vh;
+            width: max-content;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Video Slide */
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .slide video {
+            width: 80%;
+            height: 80%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.5s ease;
+        }
+
+        .slide.active video {
+            opacity: 1;
+        }
+
+        /* Project Info Overlay */
+        .slide-info {
+            position: absolute;
+            bottom: 12%;
+            left: 12%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .slide.active .slide-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-category {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+        }
+
+        /* Progress Indicator */
+        .progress {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-variant-numeric: tabular-nums;
+            z-index: 100;
+        }
+
+        /* Scroll Hint */
+        .scroll-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .scroll-hint.hidden {
+            opacity: 0;
+        }
+
+        .scroll-hint svg {
+            width: 24px;
+            height: 24px;
+            animation: scrollArrow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollArrow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(8px); }
+        }
+
+        /* Contact Slide */
+        .contact-slide {
+            background: var(--bg);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 6rem;
+            padding: 2rem;
+        }
+
+        .contact-photo {
+            width: 35%;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+        }
+
+        .contact-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%);
+        }
+
+        .contact-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .contact-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .contact-email {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-email:hover {
+            opacity: 0.6;
+        }
+
+        .contact-socials {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-socials a {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-socials a:hover {
+            color: var(--text);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.25rem;
+            }
+
+            .logo, .contact-link {
+                font-size: 1.1rem;
+            }
+
+            .slide-info {
+                bottom: 15%;
+                left: 12%;
+            }
+
+            .progress {
+                bottom: 1rem;
+                right: 1.25rem;
+            }
+
+            .scroll-hint {
+                bottom: 1rem;
+            }
+
+            .contact-slide {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .contact-photo {
+                width: 60%;
+            }
+
+            .contact-content {
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">Jakub Kubacki</a>
+        <a href="#contact" class="contact-link">Contact</a>
+    </header>
+
+    <div class="scroll-container" id="scrollContainer">
+        <!-- Video Slides -->
+        <div class="slide active" data-index="1">
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-702-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920&q=80"></video>
+            <div class="slide-info">
+                <p class="slide-category">Commercial</p>
+                <h2 class="slide-title">Brand Campaign</h2>
+            </div>
+        </div>
+
+        <div class="slide" data-index="2">
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1920&q=80"></video>
+            <div class="slide-info">
+                <p class="slide-category">Documentary</p>
+                <h2 class="slide-title">Artisan Stories</h2>
+            </div>
+        </div>
+
+        <div class="slide" data-index="3">
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1579632652768-6cb9dcf85912?w=1920&q=80"></video>
+            <div class="slide-info">
+                <p class="slide-category">Corporate</p>
+                <h2 class="slide-title">Annual Summit</h2>
+            </div>
+        </div>
+
+        <div class="slide" data-index="4">
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-waterfall-in-forest-2213-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920&q=80"></video>
+            <div class="slide-info">
+                <p class="slide-category">Music Video</p>
+                <h2 class="slide-title">Echoes</h2>
+            </div>
+        </div>
+
+        <div class="slide" data-index="5">
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-2408-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=80"></video>
+            <div class="slide-info">
+                <p class="slide-category">Branded Content</p>
+                <h2 class="slide-title">Product Series</h2>
+            </div>
+        </div>
+
+        <!-- Contact Slide -->
+        <div class="slide contact-slide" id="contact">
+            <div class="contact-photo">
+                <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=600&q=80" alt="Jakub Kubacki">
+            </div>
+            <div class="contact-content">
+                <p class="contact-label">Get in touch</p>
+                <a href="mailto:hello@jakubkubacki.com" class="contact-email">hello@jakubkubacki.com</a>
+                <div class="contact-socials">
+                    <a href="#">Vimeo</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-hint" id="scrollHint">
+        Scroll
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+    </div>
+
+    <div class="progress" id="progress">01 / 06</div>
+
+    <script>
+        const container = document.getElementById('scrollContainer');
+        const slides = document.querySelectorAll('.slide');
+        const videos = document.querySelectorAll('.slide video');
+        const progress = document.getElementById('progress');
+        const scrollHint = document.getElementById('scrollHint');
+        
+        let currentX = 0;
+        let targetX = 0;
+        let isDragging = false;
+        let startX = 0;
+        let scrollStart = 0;
+        const totalSlides = slides.length;
+        const slideWidth = window.innerWidth;
+        const maxScroll = (totalSlides - 1) * slideWidth;
+
+        // Smooth scroll animation
+        function animate() {
+            currentX += (targetX - currentX) * 0.1;
+            container.style.transform = `translateX(${-currentX}px)`;
+            
+            updateActiveSlide();
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Update active slide and play video
+        function updateActiveSlide() {
+            const activeIndex = Math.round(currentX / slideWidth);
+            const displayIndex = String(activeIndex + 1).padStart(2, '0');
+            progress.textContent = `${displayIndex} / ${String(totalSlides).padStart(2, '0')}`;
+
+            slides.forEach((slide, i) => {
+                const video = slide.querySelector('video');
+                if (i === activeIndex) {
+                    slide.classList.add('active');
+                    if (video) video.play();
+                } else {
+                    slide.classList.remove('active');
+                    if (video) video.pause();
+                }
+            });
+
+            // Hide scroll hint after first scroll
+            if (currentX > 50) {
+                scrollHint.classList.add('hidden');
+            }
+        }
+
+        // Mouse wheel horizontal scroll
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            targetX += e.deltaY * 2;
+            targetX = Math.max(0, Math.min(targetX, maxScroll));
+        }, { passive: false });
+
+        // Touch/drag support
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            scrollStart = targetX;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const diff = startX - e.clientX;
+            targetX = Math.max(0, Math.min(scrollStart + diff, maxScroll));
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            // Snap to nearest slide
+            const nearestSlide = Math.round(targetX / slideWidth);
+            targetX = nearestSlide * slideWidth;
+        });
+
+        // Touch events
+        container.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            scrollStart = targetX;
+        });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const diff = startX - e.touches[0].clientX;
+            targetX = Math.max(0, Math.min(scrollStart + diff, maxScroll));
+        });
+
+        container.addEventListener('touchend', () => {
+            isDragging = false;
+            const nearestSlide = Math.round(targetX / slideWidth);
+            targetX = nearestSlide * slideWidth;
+        });
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                const nextSlide = Math.min(Math.round(targetX / slideWidth) + 1, totalSlides - 1);
+                targetX = nextSlide * slideWidth;
+            } else if (e.key === 'ArrowLeft') {
+                const prevSlide = Math.max(Math.round(targetX / slideWidth) - 1, 0);
+                targetX = prevSlide * slideWidth;
+            }
+        });
+
+        // Click contact link to scroll to end
+        document.querySelector('.contact-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            targetX = maxScroll;
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            location.reload();
+        });
+    </script>
+</body>
+</html>
