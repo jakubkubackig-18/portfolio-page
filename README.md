@@ -11,4 +11,4 @@ Minimal horizontal-scrolling portfolio website.
 
 ## Deployment
 
-Connected to Cloudflare Pages for automatic deployment.
+Deployed via GitHub Pages.
