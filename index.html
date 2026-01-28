@@ -346,7 +346,7 @@
 
     <div class="scroll-container" id="scrollContainer">
         <!-- Video Loop: NuTshtfTyrA -->
-        <div class="slide active" data-index="1" data-type="youtube" data-video-id="NuTshtfTyrA">
+        <div class="slide active" data-index="1" data-type="youtube" data-video-id="NuTshtfTyrA" data-start="167">
             <div class="video-background">
                 <div id="player-1"></div>
             </div>
@@ -441,6 +441,7 @@
                 if (slide.dataset.type === 'youtube') {
                     const videoId = slide.dataset.videoId;
                     const index = slide.dataset.index;
+                    const start = slide.dataset.start ? parseInt(slide.dataset.start) : 0;
                     const playerId = `player-${index}`;
 
                     players[index] = new YT.Player(playerId, {
@@ -454,7 +455,11 @@
                             'loop': 1,
                             'playlist': videoId, // Required for loop to work
                             'mute': 1, // Must be muted to autoplay
-                            'playsinline': 1
+                            'playsinline': 1,
+                            'start': start,
+                            'iv_load_policy': 3, // Hide annotations
+                            'fs': 0, // Hide fullscreen button
+                            'disablekb': 1 // Disable keyboard controls
                         },
                         events: {
                             'onReady': onPlayerReady,
