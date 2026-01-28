@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,8 @@
             --text-dim: #555555;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             overflow: hidden;
         }
@@ -95,6 +97,39 @@
             overflow: hidden;
         }
 
+        /* YouTube Background Container */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            /* Allows click-through to slide */
+            overflow: hidden;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw;
+            /* 16:9 Aspect Ratio */
+            min-height: 100vh;
+            min-width: 177.77vh;
+            /* 16:9 Aspect Ratio */
+            transform: translate(-50%, -50%);
+            opacity: 0.85;
+            transition: opacity 0.5s ease;
+        }
+
+        .slide.active .video-background iframe {
+            opacity: 1;
+        }
+
+        /* Fallback/Mixed video styles */
         .slide video {
             width: 80%;
             height: 80%;
@@ -115,6 +150,8 @@
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
+            z-index: 20;
+            pointer-events: none;
         }
 
         .slide.active .slide-info {
@@ -129,12 +166,14 @@
             text-transform: uppercase;
             color: var(--text-dim);
             margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .slide-title {
             font-size: 1.5rem;
             font-weight: 300;
             letter-spacing: -0.01em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         /* Progress Indicator */
@@ -177,8 +216,15 @@
         }
 
         @keyframes scrollArrow {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(8px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
         }
 
         /* Contact Slide */
@@ -255,7 +301,8 @@
                 padding: 1rem 1.25rem;
             }
 
-            .logo, .contact-link {
+            .logo,
+            .contact-link {
                 font-size: 1.1rem;
             }
 
@@ -271,6 +318,7 @@
 
             .scroll-hint {
                 bottom: 1rem;
+                left: 50%;
             }
 
             .contact-slide {
@@ -289,6 +337,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <a href="#" class="logo">Jakub Kubacki</a>
@@ -296,33 +345,42 @@
     </header>
 
     <div class="scroll-container" id="scrollContainer">
-        <!-- Video Slides -->
-        <div class="slide active" data-index="1">
-            <video src="https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-702-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920&q=80"></video>
+        <!-- Video Loop: NuTshtfTyrA -->
+        <div class="slide active" data-index="1" data-type="youtube" data-video-id="NuTshtfTyrA">
+            <div class="video-background">
+                <div id="player-1"></div>
+            </div>
             <div class="slide-info">
-                <p class="slide-category">Commercial</p>
-                <h2 class="slide-title">Brand Campaign</h2>
+                <p class="slide-category">Featured</p>
+                <h2 class="slide-title">Cinematography Reel</h2>
             </div>
         </div>
 
-        <div class="slide" data-index="2">
-            <video src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1920&q=80"></video>
+        <!-- Video Loop: Ykh_NwChBb0 -->
+        <div class="slide" data-index="2" data-type="youtube" data-video-id="Ykh_NwChBb0">
+            <div class="video-background">
+                <div id="player-2"></div>
+            </div>
             <div class="slide-info">
-                <p class="slide-category">Documentary</p>
-                <h2 class="slide-title">Artisan Stories</h2>
+                <p class="slide-category">Atmosphere</p>
+                <h2 class="slide-title">Visual Spec</h2>
             </div>
         </div>
 
-        <div class="slide" data-index="3">
-            <video src="https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1579632652768-6cb9dcf85912?w=1920&q=80"></video>
+        <!-- Video Loop: Peja1Z40icE -->
+        <div class="slide" data-index="3" data-type="youtube" data-video-id="Peja1Z40icE">
+            <div class="video-background">
+                <div id="player-3"></div>
+            </div>
             <div class="slide-info">
-                <p class="slide-category">Corporate</p>
-                <h2 class="slide-title">Annual Summit</h2>
+                <p class="slide-category">Narrative</p>
+                <h2 class="slide-title">Short Film</h2>
             </div>
         </div>
 
         <div class="slide" data-index="4">
-            <video src="https://assets.mixkit.co/videos/preview/mixkit-waterfall-in-forest-2213-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920&q=80"></video>
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-waterfall-in-forest-2213-large.mp4" muted loop
+                playsinline poster="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920&q=80"></video>
             <div class="slide-info">
                 <p class="slide-category">Music Video</p>
                 <h2 class="slide-title">Echoes</h2>
@@ -330,7 +388,8 @@
         </div>
 
         <div class="slide" data-index="5">
-            <video src="https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-2408-large.mp4" muted loop playsinline poster="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=80"></video>
+            <video src="https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-2408-large.mp4" muted loop
+                playsinline poster="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=80"></video>
             <div class="slide-info">
                 <p class="slide-category">Branded Content</p>
                 <h2 class="slide-title">Product Series</h2>
@@ -339,12 +398,9 @@
 
         <!-- Contact Slide -->
         <div class="slide contact-slide" id="contact">
-            <div class="contact-photo">
-                <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=600&q=80" alt="Jakub Kubacki">
-            </div>
             <div class="contact-content">
                 <p class="contact-label">Get in touch</p>
-                <a href="mailto:hello@jakubkubacki.com" class="contact-email">hello@jakubkubacki.com</a>
+                <a href="mailto:jakubkubackig@gmail.com" class="contact-email">jakubkubackig@gmail.com</a>
                 <div class="contact-socials">
                     <a href="#">Vimeo</a>
                     <a href="#">Instagram</a>
@@ -353,109 +409,173 @@
         </div>
     </div>
 
-    <div class="scroll-hint" id="scrollHint">
-        Scroll
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-    </div>
+
 
     <div class="progress" id="progress">01 / 06</div>
 
     <script>
         const container = document.getElementById('scrollContainer');
         const slides = document.querySelectorAll('.slide');
-        const videos = document.querySelectorAll('.slide video');
         const progress = document.getElementById('progress');
-        const scrollHint = document.getElementById('scrollHint');
-        
+
         let currentX = 0;
         let targetX = 0;
         let isDragging = false;
         let startX = 0;
         let scrollStart = 0;
         const totalSlides = slides.length;
-        const slideWidth = window.innerWidth;
-        const maxScroll = (totalSlides - 1) * slideWidth;
+        let slideWidth = window.innerWidth;
+        let maxScroll = (totalSlides - 1) * slideWidth;
+
+        // Load YouTube API asynchronously
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // YouTube API Setup
+        let players = {};
+
+        function onYouTubeIframeAPIReady() {
+            slides.forEach((slide) => {
+                if (slide.dataset.type === 'youtube') {
+                    const videoId = slide.dataset.videoId;
+                    const index = slide.dataset.index;
+                    const playerId = `player-${index}`;
+
+                    players[index] = new YT.Player(playerId, {
+                        videoId: videoId,
+                        playerVars: {
+                            'autoplay': 0,
+                            'controls': 0,
+                            'rel': 0,
+                            'showinfo': 0,
+                            'modestbranding': 1,
+                            'loop': 1,
+                            'playlist': videoId, // Required for loop to work
+                            'mute': 1, // Must be muted to autoplay
+                            'playsinline': 1
+                        },
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange': onPlayerStateChange
+                        }
+                    });
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Mute all players by default to allow autoplay
+            event.target.mute();
+
+            // If this is the first slide, play it
+            const iframe = event.target.getIframe();
+            const slide = iframe.closest('.slide');
+            if (slide && slide.classList.contains('active')) {
+                event.target.playVideo();
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                event.target.playVideo();
+            }
+        }
 
         // Smooth scroll animation
         function animate() {
             currentX += (targetX - currentX) * 0.1;
             container.style.transform = `translateX(${-currentX}px)`;
-            
+
             updateActiveSlide();
             requestAnimationFrame(animate);
         }
         animate();
 
         // Update active slide and play video
+        let lastActiveIndex = -1;
+
         function updateActiveSlide() {
             const activeIndex = Math.round(currentX / slideWidth);
-            const displayIndex = String(activeIndex + 1).padStart(2, '0');
-            progress.textContent = `${displayIndex} / ${String(totalSlides).padStart(2, '0')}`;
 
-            slides.forEach((slide, i) => {
-                const video = slide.querySelector('video');
-                if (i === activeIndex) {
-                    slide.classList.add('active');
-                    if (video) video.play();
-                } else {
-                    slide.classList.remove('active');
-                    if (video) video.pause();
-                }
-            });
+            if (activeIndex !== lastActiveIndex) {
+                lastActiveIndex = activeIndex;
+                const displayIndex = String(activeIndex + 1).padStart(2, '0');
+                progress.textContent = `${displayIndex} / ${String(totalSlides).padStart(2, '0')}`;
 
-            // Hide scroll hint after first scroll
-            if (currentX > 50) {
-                scrollHint.classList.add('hidden');
+                slides.forEach((slide, i) => {
+                    const slideIndex = i + 1;
+                    const isYoutube = slide.dataset.type === 'youtube';
+
+                    if (i === activeIndex) {
+                        slide.classList.add('active');
+                        // Play Video
+                        if (isYoutube && players[slideIndex] && typeof players[slideIndex].playVideo === 'function') {
+                            players[slideIndex].playVideo();
+                        } else {
+                            const video = slide.querySelector('video');
+                            if (video) video.play();
+                        }
+                    } else {
+                        slide.classList.remove('active');
+                        // Pause Video
+                        if (isYoutube && players[slideIndex] && typeof players[slideIndex].pauseVideo === 'function') {
+                            players[slideIndex].pauseVideo();
+                        } else {
+                            const video = slide.querySelector('video');
+                            if (video) video.pause();
+                        }
+                    }
+                });
             }
+
+
         }
 
-        // Mouse wheel horizontal scroll
+        // Wheel event (Horizontal & Vertical)
         window.addEventListener('wheel', (e) => {
             e.preventDefault();
-            targetX += e.deltaY * 2;
+
+            // Prefer horizontal scroll (deltaX) if present (trackpads), otherwise vertical (deltaY)
+            // Some mice/trackpads send both, so we can sum them or prioritize X.
+            // For a horizontal layout, adding them is usually fine.
+            const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+
+            targetX += delta * 2;
             targetX = Math.max(0, Math.min(targetX, maxScroll));
         }, { passive: false });
 
         // Touch/drag support
-        container.addEventListener('mousedown', (e) => {
+        function handleDragStart(x) {
             isDragging = true;
-            startX = e.clientX;
+            startX = x;
             scrollStart = targetX;
-        });
+        }
 
-        window.addEventListener('mousemove', (e) => {
+        function handleDragMove(x) {
             if (!isDragging) return;
-            const diff = startX - e.clientX;
+            const diff = startX - x;
             targetX = Math.max(0, Math.min(scrollStart + diff, maxScroll));
-        });
+        }
 
-        window.addEventListener('mouseup', () => {
+        function handleDragEnd() {
+            if (!isDragging) return;
             isDragging = false;
             // Snap to nearest slide
             const nearestSlide = Math.round(targetX / slideWidth);
             targetX = nearestSlide * slideWidth;
-        });
+        }
+
+        // Mouse events
+        container.addEventListener('mousedown', (e) => handleDragStart(e.clientX));
+        window.addEventListener('mousemove', (e) => handleDragMove(e.clientX));
+        window.addEventListener('mouseup', handleDragEnd);
 
         // Touch events
-        container.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            startX = e.touches[0].clientX;
-            scrollStart = targetX;
-        });
-
-        container.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const diff = startX - e.touches[0].clientX;
-            targetX = Math.max(0, Math.min(scrollStart + diff, maxScroll));
-        });
-
-        container.addEventListener('touchend', () => {
-            isDragging = false;
-            const nearestSlide = Math.round(targetX / slideWidth);
-            targetX = nearestSlide * slideWidth;
-        });
+        container.addEventListener('touchstart', (e) => handleDragStart(e.touches[0].clientX));
+        container.addEventListener('touchmove', (e) => handleDragMove(e.touches[0].clientX));
+        container.addEventListener('touchend', handleDragEnd);
 
         // Keyboard navigation
         window.addEventListener('keydown', (e) => {
@@ -468,16 +588,42 @@
             }
         });
 
-        // Click contact link to scroll to end
+        // Click contact link
         document.querySelector('.contact-link').addEventListener('click', (e) => {
             e.preventDefault();
             targetX = maxScroll;
         });
 
-        // Handle resize
+        // Handle resize without reload
         window.addEventListener('resize', () => {
-            location.reload();
+            // Recalculate dimensions
+            slideWidth = window.innerWidth;
+            maxScroll = (totalSlides - 1) * slideWidth;
+
+            // Snap current target to nearest slide to avoid being stuck in between
+            const currentSlideIndex = Math.round(targetX / slideWidth);
+            // We want to keep the current slide in view, so we reset targetX to the new pixel position of that slide
+            // However, since targetX was based on old width, we first need to know WHICH slide we were on.
+            // Wait, round(targetX / oldWidth) would give index. But slideWidth is already updated above.
+            // Actually, we should probably track 'activeIndex' separately or derive it from currentX before invalidating dimensions.
+            // But since resize happens frequently, 'targetX' might be in flux.
+            // Let's rely on the fact that if we are mostly settled, currentX is close to N * oldWidth.
+            // If we just updated slideWidth, targetX matches nothing meaningful in pixel coordinates unless we map it.
+
+            // Better approach:
+            // 1. Get current index based on *previous* width? No, variable is gone.
+            // 2. Actually, 'lastActiveIndex' holds the current visible slide!
+
+            if (lastActiveIndex >= 0) {
+                targetX = lastActiveIndex * slideWidth;
+                // Force immediate update to prevent visual glitching
+                currentX = targetX;
+            } else {
+                targetX = 0;
+                currentX = 0;
+            }
         });
     </script>
 </body>
+
 </html>
